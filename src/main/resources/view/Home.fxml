@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="480.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.one.converter.controller.CurrencyController">
+   <children>
+      <SplitPane prefHeight="480.0" prefWidth="200.0" style="-fx-background-color: #393E46;">
+         <items>
+            <AnchorPane prefHeight="506.0" prefWidth="198.0">
+               <children>
+                  <Text fill="WHITE" layoutX="19.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Currency &#10;Converter" textAlignment="CENTER">
+                     <font>
+                        <Font name="Lato Regular" size="36.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="35.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/anime-girl.gif" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="26.0" layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ONE &#10;Challenge by FrancoGL&#10;API - Exchangerate.host" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+               </children></AnchorPane>
+         </items>
+      </SplitPane>
+      <SplitPane layoutX="200.0" prefHeight="480.0" prefWidth="480.0">
+         <items>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="textField" alignment="CENTER" layoutX="165.0" layoutY="146.0" promptText="Amount" />
+                  <ChoiceBox fx:id="fromCurrency" layoutX="14.0" layoutY="238.0" prefHeight="25.0" prefWidth="168.0" />
+                  <ChoiceBox fx:id="toCurrency" layoutX="304.0" layoutY="238.0" prefHeight="25.0" prefWidth="160.0" />
+                  <Text layoutX="228.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To">
+                     <font>
+                        <Font name="Lato Regular" size="14.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="output" alignment="CENTER" layoutY="372.0" prefHeight="23.0" prefWidth="480.0">
+                     <font>
+                        <Font name="Lato Regular" size="18.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="202.0" layoutY="308.0" mnemonicParsing="false" onAction="#currencyConvert" text="Convert">
+                     <font>
+                        <Font name="Lato Regular" size="14.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
+         </items></SplitPane>
+   </children>
+</AnchorPane>

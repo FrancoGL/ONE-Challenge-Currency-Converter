@@ -7,6 +7,6 @@ module org.one.converter {
 
     opens org.one.converter.controller to javafx.fxml;
     opens org.one.converter to javafx.fxml;
-    //exports org.one.converter;
-    //exports org.one.converter.controller;
+    exports org.one.converter;
+    exports org.one.converter.controller;
 }
