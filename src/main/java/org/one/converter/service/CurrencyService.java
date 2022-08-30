@@ -1,15 +1,18 @@
 package org.one.converter.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import org.one.converter.error.ErrorResponse;
 import org.one.converter.mapper.JsonMapper;
 import org.one.converter.method.GetRequest;
 import org.one.converter.model.request.CurrencyRequest;
 import org.one.converter.model.response.CurrencyResponse;
 import org.one.converter.service.abstraction.GetAllCurrency;
 import org.one.converter.service.abstraction.GetCurrency;
+import org.one.converter.util.SetError;
 
 public class CurrencyService implements GetCurrency, GetAllCurrency {
 
@@ -20,47 +23,28 @@ public class CurrencyService implements GetCurrency, GetAllCurrency {
   }
 
   @Override
-  public CurrencyResponse get(CurrencyRequest currencyRequest) {
+  public CurrencyResponse get(CurrencyRequest currencyRequest)
+      throws ErrorResponse, JsonProcessingException {
 
-    try {
-      HttpResponse<String> json = GetRequest.getRequest(currencyRequest.buildUrlToConvertRequest());
+    HttpResponse<String> json = GetRequest.getRequest(currencyRequest.buildUrlToConvertRequest());
 
-      if (json.statusCode() == 200) {
-        return mapper.jsonToCurrencyResponse(json.body());
-      } else {
-        CurrencyResponse currencyResponse = new CurrencyResponse();
-        currencyResponse.setError("Error" + json.statusCode());
-        return currencyResponse;
-      }
-    } catch (Exception e) {
-      CurrencyResponse currencyResponse = new CurrencyResponse();
-      currencyResponse.setError(e.getMessage());
-      return currencyResponse;
+    if (json.statusCode() == 200) {
+      return mapper.jsonToCurrencyResponse(json.body());
+    } else {
+      return SetError.setErrorResponse("Error" + json.statusCode());
     }
   }
 
   @Override
-  public List<CurrencyResponse> getAll(CurrencyRequest currencyRequest) {
+  public List<CurrencyResponse> getAll(String url) throws JsonProcessingException, ErrorResponse {
 
-    try {
-      HttpResponse<String> json = GetRequest.getRequest(currencyRequest.getUrl());
+    HttpResponse<String> json = GetRequest.getRequest(url);
 
-      if (json.statusCode() == 200) {
-        return mapper.jsonToCurrencyResponseList(json.body());
-      } else {
-        List<CurrencyResponse> currencyResponses = new ArrayList<>();
-        CurrencyResponse currencyResponse = new CurrencyResponse();
-        currencyResponse.setError("Error" + json.statusCode());
-        currencyResponses.add(currencyResponse);
-        return currencyResponses;
-      }
-
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
+    if (json.statusCode() == 200) {
+      return mapper.jsonToCurrencyResponseList(json.body());
+    } else {
       List<CurrencyResponse> currencyResponses = new ArrayList<>();
-      CurrencyResponse currencyResponse = new CurrencyResponse();
-      currencyResponse.setError(e.getMessage());
-      currencyResponses.add(currencyResponse);
+      currencyResponses.add(SetError.setErrorResponse("Error" + json.statusCode()));
       return currencyResponses;
     }
   }
