@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import org.one.converter.model.request.CurrencyRequest;
 import org.one.converter.model.response.CurrencyResponse;
 import org.one.converter.service.CurrencyService;
+import org.one.converter.util.GenerateCurrencyRequest;
+import org.one.converter.util.SetOutput;
 
 public class CurrencyController implements Initializable {
 
@@ -33,23 +35,31 @@ public class CurrencyController implements Initializable {
     this.currencyService = new CurrencyService();
   }
 
+  private String setUrl;
+
   public void currencyConvert() {
 
-    if(fromCurrency.getValue() != null && toCurrency.getValue() != null && !textField.getText().isEmpty()) {
+    setUrl = "https://api.exchangerate.host/convert";
+    String getFromCurrency = fromCurrency.getValue();
+    String getToCurrency = toCurrency.getValue();
+    String getAmount = textField.getText();
 
-      CurrencyRequest currencyRequest = new CurrencyRequest();
+    try {
+      if (!getAmount.isEmpty() && getFromCurrency != null && getToCurrency != null) {
 
-      currencyRequest.setUrl("https://api.exchangerate.host/convert");
-      currencyRequest.setFrom(fromCurrency.getValue());
-      currencyRequest.setTo(toCurrency.getValue());
-      currencyRequest.setAmount(Double.parseDouble(textField.getText()));
+        CurrencyRequest currencyRequest = GenerateCurrencyRequest.generateCurrencyRequest(
+            setUrl, getFromCurrency, getToCurrency, getAmount);
 
-      CurrencyResponse result = currencyService.get(currencyRequest);
+        CurrencyResponse result = currencyService.get(currencyRequest);
 
-      output.setText(String.format("%s %s", result.getAmount(), result.getCode().substring(1,4)));
-    } else {
-      output.setText("You have to provide amount and currencies");
-      output.setTextFill(Color.RED);
+        SetOutput.setOutput(output,
+            String.format("%s %s", result.getAmount(), result.getCode().substring(1, 4)),
+            Color.BLACK);
+      } else {
+        SetOutput.setOutput(output, "You have to provide amount and currencies", Color.RED);
+      }
+    } catch (Exception e) {
+      SetOutput.setOutput(output, e.getMessage(), Color.RED);
     }
   }
 
@@ -57,11 +67,9 @@ public class CurrencyController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     try {
 
-      CurrencyRequest currencyRequest = new CurrencyRequest();
+      setUrl = "https://api.exchangerate.host/symbols";
 
-      currencyRequest.setUrl("https://api.exchangerate.host/symbols");
-
-      List<CurrencyResponse> currencyResponses = currencyService.getAll(currencyRequest);
+      List<CurrencyResponse> currencyResponses = currencyService.getAll(setUrl);
 
       currencyResponses.forEach(e -> {
         fromCurrency.getItems().add(String.format("%s (%s)", e.getCode(), e.getDescription()));
@@ -69,7 +77,7 @@ public class CurrencyController implements Initializable {
       });
 
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      SetOutput.setOutput(output, e.getMessage(), Color.RED);
     }
   }
 }
