@@ -15,19 +15,13 @@
 
 ## Overview
 
-
-<video width="250" autoplay>
-    <source src="./other/example.mp4">
-</video>
-
+![example_AdobeExpress](https://user-images.githubusercontent.com/66887467/187524428-3031b652-29ca-4c5f-9804-93f0b762da58.gif)
 
 
 ## Build With
-* HTML
-* CSS
-* Javascript
-* Mobile-first workflow
-
+* Java 17 Amazon Corretto
+* JavaFX 18
+* Maven
 
 ## Contact
 * [GitHub](https://github.com/FrancoGL)
